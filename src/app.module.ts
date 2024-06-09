@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ApplicationModule } from './application/application.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { Request } from './lib/entities/requestEntity';
+import { RequestsModule } from './requests/requests.module';
+import { User } from './lib/entities/userEntity';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -15,9 +17,9 @@ import { TypeOrmModule } from '@nestjs/typeorm'
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    entities: [],
+    entities: [User, Request],
     synchronize: true,
-  }), ApplicationModule, AuthModule],
+  }), RequestsModule, AuthModule],
   controllers: [],
   providers: [],
 })
