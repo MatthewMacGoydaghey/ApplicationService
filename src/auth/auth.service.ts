@@ -2,16 +2,12 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException 
 import { RegUserDTO } from '../lib/dto/regUserDTO';
 import { LoginDTO } from '../lib/dto/loginDTO';
 import { Repository } from 'typeorm';
-import { PositionEnum, User } from '../lib/entities/userEntity';
+import { User } from '../lib/entities/userEntity';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs'
 import { JwtService } from '@nestjs/jwt';
-import { Payload } from 'nats';
+import { JWTpayload, PositionEnum } from '../lib/misc/types';
 
-export interface JWTpayload {
-  id: number,
-  position: PositionEnum
-}
 
 @Injectable()
 export class AuthService {
@@ -32,7 +28,7 @@ export class AuthService {
     const savedUser = await this.UserRepository.save(newUser)
     return this.generateToken(savedUser.id, savedUser.position)
   }
-  
+
 
   async login(body: LoginDTO) {
     const foundUser = await this.findUserByEmail(body.email, 'NotFound')

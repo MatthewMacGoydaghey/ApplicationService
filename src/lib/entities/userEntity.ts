@@ -1,22 +1,28 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Request } from "./requestEntity";
+import { PositionEnum } from "../misc/types";
+import { ApiProperty } from "@nestjs/swagger";
 
-export type PositionEnum = "Processor" | "Requester"
 
 @Entity()
 export class User {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number
 
+  @ApiProperty()
   @Column({nullable: false})
   name: string
 
+  @ApiProperty()
   @Column({nullable: false})
   email: string
 
+  @ApiProperty()
   @Column({nullable: false})
   password: string
 
+  @ApiProperty()
   @Column({nullable: false,
     type: "enum",
     enum: ["Processor", "Requester"]},)

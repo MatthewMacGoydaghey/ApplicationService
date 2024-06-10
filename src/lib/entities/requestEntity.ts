@@ -1,21 +1,26 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { StatusEnum } from "../dto/requestDTO";
 import { User } from "./userEntity";
+import { StatusEnum } from "../misc/types";
+import { ApiProperty } from "@nestjs/swagger";
 
 
 @Entity()
 export class Request {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number
 
+  @ApiProperty()
   @Column({nullable: false,
   type: "enum",
   enum: ["Active", "Resolved"]},)
   status: StatusEnum
 
+  @ApiProperty()
   @Column({nullable: false})
   message: string
 
+  @ApiProperty()
   @Column({nullable: true})
   comment: string
 
@@ -27,9 +32,11 @@ export class Request {
   @JoinColumn()
   processor: User
 
+  @ApiProperty()
   @CreateDateColumn()
-  created_at: Date
+  created_at: string
 
+  @ApiProperty()
   @UpdateDateColumn()
-  updated_at: Date
+  updated_at: string
 }

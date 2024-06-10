@@ -1,8 +1,8 @@
-import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator'
-
-export type StatusEnum = "Active" | "Resolved"
+import { ApiProperty } from '@nestjs/swagger'
+import { IsString } from 'class-validator'
 
 export class RequestDTO {
+  @ApiProperty()
   @IsString()
   message: string
 }

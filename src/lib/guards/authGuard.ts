@@ -1,5 +1,4 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
-import { Reflector } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
 import { Observable } from "rxjs";
 
@@ -13,13 +12,18 @@ export class AuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
    const request = context.switchToHttp().getRequest()
    try {
-    const authHeader = request.headers.authorization
-    if (!authHeader) {
+    let token = ''
+    let authHeader = request.headers.authorization
+    if (authHeader) {
+      token = authHeader.split(' ')[1]
+    } else {
+      authHeader = request.headers.jwt
+      token = authHeader
+      if (!authHeader) {
       throw new UnauthorizedException({message: 'AuthHeader not found'})
+      }
     }
-    const bearer = authHeader.split(' ')[0]
-    const token = authHeader.split(' ')[1]
-    if (!token || !bearer) {
+    if (!token) {
      throw new UnauthorizedException({message: 'Token not found'});
    }
    const user = this.jwtService.verify(token)
