@@ -22,16 +22,19 @@ export class PositionGuard implements CanActivate {
     context.getHandler(),
     context.getClass()
   ])
-  try {
   const request = context.switchToHttp().getRequest()
   const payload: JWTpayload = request.user
  if (requiredPositions.includes(payload.position)) {
   return true
 } else {
-  throw new ForbiddenException({message: 'You dont have rights to use this route'})
-}
-  } catch (error) {
-    return false
+  let message = 'You do not have right to use this route'
+  if (payload.position === 'Processor') {
+    message = 'User with position Processor can not use this route'
   }
+  if (payload.position === 'Requester') {
+    message = 'User with position Requester can not use this route'
+  }
+  throw new ForbiddenException({message})
+}
  }}
   

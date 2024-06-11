@@ -16,7 +16,7 @@ export class RegUserDTO {
   password: string
 
   @ApiProperty()
-  @IsEnum(['Processor', 'Requester'])
+  @IsEnum(['Processor', 'Requester'], {message: 'Position must be one of the following values: Processor, Requester'})
   position: PositionEnum
 
 }

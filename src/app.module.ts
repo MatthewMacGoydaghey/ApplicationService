@@ -18,7 +18,7 @@ import { User } from './lib/entities/userEntity';
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     entities: [User, Request],
-    synchronize: true,
+    synchronize: true
   }), RequestsModule, AuthModule],
   controllers: [],
   providers: [],

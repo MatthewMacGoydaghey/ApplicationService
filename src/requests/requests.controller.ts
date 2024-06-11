@@ -10,19 +10,20 @@ import { ApiHeader, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs
 import { Request } from '../lib/entities/requestEntity';
 
 @ApiTags('Requests')
+@ApiHeader({
+  name: 'jwt',
+  description: 'Ввести полученный после авторизации JWT-token'
+})
 @Controller('requests')
 export class RequestsController {
   constructor(
     private RequestService: RequestsService
   ) {}
 
-  @ApiHeader({
-    name: 'jwt',
-    description: 'Ввести полученный после авторизации JWT-token'
-  })
+  
   @ApiQuery({
     name: 'status',
-    description: "Active" || "Resolved",
+    description: "Active | Resolved",
     required: false
   })
   @ApiQuery({
@@ -30,18 +31,24 @@ export class RequestsController {
     description: "Возвращает заявки в диапазоне указанных дат. Вводится в формате yyyy-mm-dd hh:mm:ss,yyyy-mm-dd hh:mm:ss, время вводить не обязательно",
     required: false
   })
+  @ApiQuery({
+    name: 'skip',
+    description: "Сколько страниц нужно пропустить. На одной странице по умолчанию 10 заявок",
+    required: false
+  })
   @ApiOperation({summary: "Возвращает массив заявок"})
   @ApiResponse({status: 200, type: [Request]})
   @RequiredPositions('Processor')
   @UseGuards(AuthGuard, PositionGuard)
   @Get()
-  findRequests(@Query('status') status: StatusEnum, @Query('date') date: string) {
-    return this.RequestService.findRequests(status, date)
+  findRequests(@Query('status') status: StatusEnum, @Query('date') date: string, @Query('skip') skip: number) {
+    return this.RequestService.findRequests(status, date, skip)
   }
 
   @ApiOperation({summary: "Создаёт заявку"})
   @ApiResponse({status: 201, type: Request})
-  @UseGuards(AuthGuard)
+  @RequiredPositions('Requester')
+  @UseGuards(AuthGuard, PositionGuard)
   @Post()
   sentRequest(@Body() body: RequestDTO, @User() user: JWTpayload) {
     return this.RequestService.sentRequest(body, user)

@@ -17,7 +17,10 @@ export class RequestsService {
     @InjectRepository(User) private readonly UserRepository: Repository<User>
   ) {}
 
-  async findRequests(status: StatusEnum, date: string) {
+  async findRequests(status: StatusEnum, date: string, skip: number) {
+    if (skip) {
+      skip += 0
+    }
     try {
       const requests = await this.RequestRepository.find({where: {status,
         created_at: BetweenDates(date)},
@@ -33,7 +36,7 @@ export class RequestsService {
        }, relations: {
          requester: true,
          processor: true
-       }})
+       }, skip: skip || 0, take: 10})
        return requests
     } catch (err) {
       if (err.code == 22007 || 22008) {
