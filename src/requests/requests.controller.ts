@@ -28,7 +28,7 @@ export class RequestsController {
   })
   @ApiQuery({
     name: 'date',
-    description: "Возвращает заявки в диапазоне указанных дат. Вводится в формате yyyy-mm-dd hh:mm:ss,yyyy-mm-dd hh:mm:ss, время вводить не обязательно",
+    description: "Возвращает заявки в диапазоне указанных дат. Вводится в формате yyyy-mm-dd hh:mm:ss, yyyy-mm-dd hh:mm:ss, время и вторую дату вводить не обязательно",
     required: false
   })
   @ApiQuery({

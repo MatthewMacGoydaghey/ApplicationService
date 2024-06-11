@@ -22,7 +22,7 @@ export class AuthController {
 
   @ApiOperation({summary: "Возвращает JWT токен"})
   @ApiResponse({status: 200})
-  @Get()
+  @Post("/login")
   login(@Body() body: LoginDTO) {
  return this.AuthService.login(body)
   }
